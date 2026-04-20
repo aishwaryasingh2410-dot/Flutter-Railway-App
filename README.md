@@ -167,16 +167,16 @@ FlutterRailwayApp/
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to open a pull request or issue.
 
 ---
 
-<p align="center">Made with ❤️ using Flutter</p>
+<p align="center">Made using Flutter</p>
