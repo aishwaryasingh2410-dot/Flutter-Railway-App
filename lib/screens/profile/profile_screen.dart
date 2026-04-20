@@ -88,7 +88,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   children: [
                     const SizedBox(height: 24),
 
-                    // 🔥 PROFILE CARD + EDIT BUTTON
                     Stack(
                       alignment: Alignment.topRight,
                       children: [
@@ -118,7 +117,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                           ),
                         ),
 
-                        // ✏️ EDIT BUTTON
                         IconButton(
                           icon: const Icon(Icons.edit, color: Colors.white),
                           onPressed: _showEditDialog,
@@ -165,7 +163,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
                     const SizedBox(height: 20),
 
-                    // 🔥 LOGOUT
                     Material(
                       color: FypColors.appBarLavender,
                       borderRadius: BorderRadius.circular(12),
@@ -195,6 +192,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InfoRow extends StatelessWidget {
+  final String label;
+  final String value;
+
+  const _InfoRow({
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(value),
         ],
       ),
     );
