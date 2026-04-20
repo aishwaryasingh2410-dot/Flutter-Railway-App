@@ -8,7 +8,17 @@ plugins {
 android {
     namespace = "com.railway.booking.railway_booking"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    //ndkVersion = flutter.ndkVersion
+    // ndkVersion removed to avoid unnecessary native build
+
+    splits {
+        abi {
+            isEnabled = true
+            reset()
+            include("x86_64")   // ONLY emulator architecture
+            isUniversalApk = false
+        }
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -24,10 +34,15 @@ android {
         applicationId = "com.railway.booking.railway_booking"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
+
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        ndk {
+            abiFilters += listOf("x86_64")
+        }
     }
 
     buildTypes {

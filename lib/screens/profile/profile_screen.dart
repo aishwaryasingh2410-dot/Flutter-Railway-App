@@ -4,12 +4,66 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/auth_session_provider.dart';
 import '../../theme/fyp_colors.dart';
 
-/// Profile — lavender gradient header, info card, LOG OUT.
-class ProfileScreen extends ConsumerWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+
+  String name = "Aishu";
+  String phone = "8104676189";
+  String email = "aishu@gmail.com";
+  String password = "123123";
+
+  void _showEditDialog() {
+    final nameController = TextEditingController(text: name);
+    final phoneController = TextEditingController(text: phone);
+    final emailController = TextEditingController(text: email);
+    final passwordController = TextEditingController(text: password);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Update Details"),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextField(controller: nameController, decoration: const InputDecoration(labelText: "Name")),
+                TextField(controller: phoneController, decoration: const InputDecoration(labelText: "Phone")),
+                TextField(controller: emailController, decoration: const InputDecoration(labelText: "Email")),
+                TextField(controller: passwordController, decoration: const InputDecoration(labelText: "Password")),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  name = nameController.text;
+                  phone = phoneController.text;
+                  email = emailController.text;
+                  password = passwordController.text;
+                });
+                Navigator.pop(context);
+              },
+              child: const Text("Save"),
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ColoredBox(
       color: FypColors.appBarLavender,
       child: Column(
@@ -33,36 +87,50 @@ class ProfileScreen extends ConsumerWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 24),
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: FypColors.profileDeepBlue,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: const Column(
-                        children: [
-                          CircleAvatar(
-                            radius: 36,
-                            backgroundColor: Colors.black,
-                            child: Icon(Icons.person, size: 44, color: Colors.white),
+
+                    // 🔥 PROFILE CARD + EDIT BUTTON
+                    Stack(
+                      alignment: Alignment.topRight,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                            color: FypColors.profileDeepBlue,
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          SizedBox(height: 12),
-                          Text(
-                            'Amar',
-                            style: TextStyle(
-                              color: FypColors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
+                          child: Column(
+                            children: [
+                              const CircleAvatar(
+                                radius: 36,
+                                backgroundColor: Colors.black,
+                                child: Icon(Icons.person, size: 44, color: Colors.white),
+                              ),
+                              const SizedBox(height: 12),
+                              Text(
+                                name,
+                                style: const TextStyle(
+                                  color: FypColors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+
+                        // ✏️ EDIT BUTTON
+                        IconButton(
+                          icon: const Icon(Icons.edit, color: Colors.white),
+                          onPressed: _showEditDialog,
+                        )
+                      ],
                     ),
                   ],
                 ),
               ),
             ),
           ),
+
           Expanded(
             flex: 6,
             child: Container(
@@ -82,19 +150,22 @@ class ProfileScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(color: FypColors.profileDeepBlue, width: 1.5),
                       ),
-                      child: const Column(
+                      child: Column(
                         children: [
-                          _InfoRow(label: 'Name', value: 'Amar'),
-                          Divider(height: 1),
-                          _InfoRow(label: 'Number', value: '69696969'),
-                          Divider(height: 1),
-                          _InfoRow(label: 'E-mail', value: 'amar@gmail.com'),
-                          Divider(height: 1),
-                          _InfoRow(label: 'Password', value: '123123'),
+                          _InfoRow(label: 'Name', value: name),
+                          const Divider(height: 1),
+                          _InfoRow(label: 'Number', value: phone),
+                          const Divider(height: 1),
+                          _InfoRow(label: 'E-mail', value: email),
+                          const Divider(height: 1),
+                          _InfoRow(label: 'Password', value: password),
                         ],
                       ),
                     ),
+
                     const SizedBox(height: 20),
+
+                    // 🔥 LOGOUT
                     Material(
                       color: FypColors.appBarLavender,
                       borderRadius: BorderRadius.circular(12),
@@ -122,42 +193,6 @@ class ProfileScreen extends ConsumerWidget {
                   ],
                 ),
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              '$label :',
-              style: const TextStyle(
-                color: FypColors.profileDeepBlue,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(
-              value,
-              style: const TextStyle(color: FypColors.black),
-              textAlign: TextAlign.right,
             ),
           ),
         ],
